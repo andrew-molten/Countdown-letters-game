@@ -4,7 +4,7 @@ import ChooseLettersButtons from './components/ChooseLettersButtons'
 function App() {
   return (
     <>
-      <h1>Countdown letters</h1>
+      <h1 className="text-3xl font-bold mb-10">Countdown letters</h1>
       <ChooseLettersButtons />
 
       {/* 
