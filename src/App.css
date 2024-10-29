@@ -8,3 +8,7 @@
   padding: 2rem;
   text-align: center;
 }
+
+.btn {
+  @apply m-5 p-3 rounded-3xl text-xl bg-violet-400;
+}
