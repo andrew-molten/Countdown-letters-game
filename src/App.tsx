@@ -7,6 +7,13 @@ function App() {
 
       {/* 
         1. Allow the user to choose Consonants/Vowels 
+          - create a button for each
+          - choose randomly from the appropriate array
+          - update state - with current letters & number of letters chosen
+
+          - components to display the letters & the buttons
+
+
         2. Program should automatically identify the longest possible English word in each round and score the appropriate number of points for the round.
         3. POINTS - 1 point per letter or 18 points if they have used all 9
         4. Allow for 4 rounds to be played
