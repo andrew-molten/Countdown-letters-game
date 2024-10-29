@@ -1,11 +1,24 @@
+import { useState } from 'react'
 import './App.css'
 import ChooseLettersButtons from './components/ChooseLettersButtons'
+import { LettersChosen } from './models'
 
 function App() {
+  const [lettersChosen, setLettersChosen] = useState<LettersChosen>({
+    letters: [],
+    numLetters: 0,
+  })
+  console.log(lettersChosen)
+
   return (
     <>
       <h1 className="text-3xl font-bold mb-10">Countdown letters</h1>
-      <ChooseLettersButtons />
+      {lettersChosen.numLetters < 9 && (
+        <ChooseLettersButtons
+          lettersChosen={lettersChosen}
+          setLettersChosen={setLettersChosen}
+        />
+      )}
 
       {/* 
         1. Allow the user to choose Consonants/Vowels 
