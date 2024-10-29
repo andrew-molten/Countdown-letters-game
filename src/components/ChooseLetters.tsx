@@ -1,4 +1,4 @@
-import { LettersChosen } from '../models'
+import { LettersChosen } from '../models.ts'
 import { constonants, vowels } from '../data/letters.ts'
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
   setLettersChosen: React.Dispatch<React.SetStateAction<LettersChosen>>
 }
 
-function ChooseLettersButtons({ lettersChosen, setLettersChosen }: Props) {
+function ChooseLetters({ lettersChosen, setLettersChosen }: Props) {
   const lettersLeft = 9 - lettersChosen.numLetters
 
   function chooseRandomLetter(array: string[]) {
@@ -49,4 +49,4 @@ function ChooseLettersButtons({ lettersChosen, setLettersChosen }: Props) {
   )
 }
 
-export default ChooseLettersButtons
+export default ChooseLetters

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import ChooseLettersButtons from './components/ChooseLettersButtons'
+import ChooseLetters from './components/ChooseLetters'
 import { LettersChosen } from './models'
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
     <>
       <h1 className="text-3xl font-bold mb-10">Countdown letters</h1>
       {lettersChosen.numLetters < 9 && (
-        <ChooseLettersButtons
+        <ChooseLetters
           lettersChosen={lettersChosen}
           setLettersChosen={setLettersChosen}
         />
