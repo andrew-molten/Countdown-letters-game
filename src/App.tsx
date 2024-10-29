@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import ChooseLetters from './components/ChooseLetters'
 import { LettersChosen } from './models'
+import DisplayLetters from './components/DisplayLetters'
 
 function App() {
   const [lettersChosen, setLettersChosen] = useState<LettersChosen>({
@@ -19,6 +20,8 @@ function App() {
           setLettersChosen={setLettersChosen}
         />
       )}
+
+      <DisplayLetters lettersChosen={lettersChosen} />
 
       {/* 
         1. Allow the user to choose Consonants/Vowels 
