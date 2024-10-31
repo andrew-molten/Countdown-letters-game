@@ -1,5 +1,6 @@
-import { LettersChosen } from '../models'
-import englishWords from '../data/englishWords.json' // from https://github.com/dwyl/english-words/tree/master
+import { LettersChosen, WordsByLength } from '../models'
+// import englishWords from '../data/englishWords.json' // from https://github.com/dwyl/english-words/tree/master
+import { websterDictionary } from '../data/websterDictionary' // from https://github.com/matthewreagan/WebstersEnglishDictionary/blob/master/dictionary.json
 import { alphabet } from '../data/letters'
 
 interface Props {
@@ -15,9 +16,15 @@ function LongestWord({ lettersChosen }: Props) {
   const englishWordsArray = []
 
   // Remove words longer than 9 letters
-  for (const [key] of Object.entries(englishWords)) {
-    if (key.length <= 9) {
-      englishWordsArray.push(key)
+  // for (const [key] of Object.entries(englishWords)) {
+  //   if (key.length <= 9) {
+  //     englishWordsArray.push(key)
+  //   }
+  // }
+
+  for (const word of websterDictionary) {
+    if (word.length <= 9) {
+      englishWordsArray.push(word)
     }
   }
 
@@ -48,92 +55,45 @@ function LongestWord({ lettersChosen }: Props) {
   const eightLetterWords: string[] = []
   const nineLetterWords: string[] = []
 
-  function checkWord(arr: string[], thisWord: string) {
-    if (wordsWithChosenLetters.includes(thisWord) && !arr.includes(thisWord)) {
-      arr.push(thisWord)
+  const wordsByLength: WordsByLength = {
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: [],
+    7: [],
+    8: [],
+    9: [],
+  }
+
+  function checkWord(currentWord: string) {
+    const arr = wordsByLength[currentWord.length as keyof typeof wordsByLength]
+    if (
+      wordsWithChosenLetters.includes(currentWord) &&
+      !arr.includes(currentWord)
+    ) {
+      arr.push(currentWord)
     }
   }
 
-  for (let i = 0; i < letters.length; i++) {
-    const thisWord = letters[i]
-    checkWord(oneLetterWords, thisWord)
-    for (let j = 0; j < letters.length; j++) {
-      if (i === j) continue
-      const thisWord = `${letters[i]}${letters[j]}`
-      checkWord(twoLetterWords, thisWord)
-      for (let k = 0; k < letters.length; k++) {
-        if (k === i || k === j) continue
-        const thisWord = `${letters[i]}${letters[j]}${letters[k]}`
-        checkWord(threeLetterWords, thisWord)
-        for (let l = 0; l < letters.length; l++) {
-          if (l === i || l === j || l === k) continue
-          const thisWord = `${letters[i]}${letters[j]}${letters[k]}${letters[l]}`
-          checkWord(fourLetterWords, thisWord)
-          for (let m = 0; m < letters.length; m++) {
-            if (m === i || m === j || m === k || m === l) continue
-            const thisWord = `${letters[i]}${letters[j]}${letters[k]}${letters[l]}${letters[m]}`
-            checkWord(fiveLetterWords, thisWord)
+  // Refactor
+  //  - use recursion as keyof typeof wordsByLength
+  //  - How can I keep track of how many letters have been done - usedIndices.length
 
-            for (let n = 0; n < letters.length; n++) {
-              if (n === i || n === j || n === k || n === l || n === m) continue
-              const thisWord = `${letters[i]}${letters[j]}${letters[k]}${letters[l]}${letters[m]}${letters[n]}`
-              checkWord(sixLetterWords, thisWord)
-
-              for (let o = 0; o < letters.length; o++) {
-                if (
-                  o === i ||
-                  o === j ||
-                  o === k ||
-                  o === l ||
-                  o === m ||
-                  o === n
-                )
-                  continue
-                const thisWord = `${letters[i]}${letters[j]}${letters[k]}${letters[l]}${letters[m]}${letters[n]}${letters[o]}`
-                checkWord(sevenLetterWords, thisWord)
-                for (let p = 0; p < letters.length; p++) {
-                  if (
-                    p === i ||
-                    p === j ||
-                    p === k ||
-                    p === l ||
-                    p === m ||
-                    p === n ||
-                    p === o
-                  )
-                    continue
-                  const thisWord = `${letters[i]}${letters[j]}${letters[k]}${letters[l]}${letters[m]}${letters[n]}${letters[o]}${letters[p]}`
-                  checkWord(eightLetterWords, thisWord)
-                  for (let q = 0; q < letters.length; q++) {
-                    if (
-                      q === i ||
-                      q === j ||
-                      q === k ||
-                      q === l ||
-                      q === m ||
-                      q === n ||
-                      q === o ||
-                      q === p
-                    )
-                      continue
-                    const thisWord = `${letters[i]}${letters[j]}${letters[k]}${letters[l]}${letters[m]}${letters[n]}${letters[o]}${letters[p]}${letters[q]}`
-                    checkWord(nineLetterWords, thisWord)
-                  }
-                }
-              }
-            }
-          }
-        }
+  function generateWords(currentWord = '', usedIndices: number[] = []) {
+    for (let i = 0; i < letters.length; i++) {
+      if (usedIndices.includes(i)) continue
+      const newWord = currentWord + letters[i]
+      checkWord(newWord)
+      if (usedIndices.length < 9) {
+        generateWords(newWord, [...usedIndices, i])
       }
     }
   }
-  // console.log(threeLetterWords.length)
-  // console.log(fourLetterWords.length)
-  // console.log(fiveLetterWords.length)
-  // console.log(sixLetterWords.length)
-  // console.log(sevenLetterWords.length)
-  // console.log(eightLetterWords.length)
-  // console.log(nineLetterWords.length)
+
+  generateWords()
+  console.log(wordsByLength)
 
   function returnLongestWords() {
     if (nineLetterWords.length > 0) {
