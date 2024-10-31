@@ -23,7 +23,9 @@ function App() {
       )}
 
       <DisplayLetters lettersChosen={lettersChosen} />
-      <LongestWord lettersChosen={lettersChosen} />
+      {lettersChosen.numLetters === 9 && (
+        <LongestWord lettersChosen={lettersChosen} />
+      )}
 
       {/* 
         1. Allow the user to choose Consonants/Vowels 
