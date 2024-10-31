@@ -1,5 +1,6 @@
 import { LettersChosen, WordsByLength } from '../models'
 // import englishWords from '../data/englishWords.json' // from https://github.com/dwyl/english-words/tree/master
+// Removed above dictionary as it had some questionable words
 import { websterDictionary } from '../data/websterDictionary' // from https://github.com/matthewreagan/WebstersEnglishDictionary/blob/master/dictionary.json
 import { alphabet } from '../data/letters'
 
@@ -8,53 +9,9 @@ interface Props {
 }
 
 function LongestWord({ lettersChosen }: Props) {
-  // lettersChosen.letters
   const letters = lettersChosen.letters
-
   const nonLetters = alphabet.filter((letter) => !letters.includes(letter))
-
-  const englishWordsArray = []
-
-  // Remove words longer than 9 letters
-  // for (const [key] of Object.entries(englishWords)) {
-  //   if (key.length <= 9) {
-  //     englishWordsArray.push(key)
-  //   }
-  // }
-
-  for (const word of websterDictionary) {
-    if (word.length <= 9) {
-      englishWordsArray.push(word)
-    }
-  }
-
-  // Remove words containing letters that are not in lettersChosen
-  const wordsWithChosenLetters = englishWordsArray.filter((word) => {
-    for (const letter of nonLetters) {
-      if (word.includes(letter)) {
-        return false
-      }
-    }
-    return true
-  })
-
-  // POSSIBLE STEPS
-  // - Iterate over the words from longest possible , to check if they exist //
-  // - Or remove words containing more of some letters than lettersChosen has //
-  // - iterate over each word & check against lettersChosen //
-  // have an array conataining the letterChosen inside For loop - if the letters match - pop one value off of the lettersChosen
-  // - Create a list of possible words of different lengths
-
-  const oneLetterWords: string[] = []
-  const twoLetterWords: string[] = []
-  const threeLetterWords: string[] = []
-  const fourLetterWords: string[] = []
-  const fiveLetterWords: string[] = []
-  const sixLetterWords: string[] = []
-  const sevenLetterWords: string[] = []
-  const eightLetterWords: string[] = []
-  const nineLetterWords: string[] = []
-
+  const nineLetterWords = []
   const wordsByLength: WordsByLength = {
     1: [],
     2: [],
@@ -67,61 +24,61 @@ function LongestWord({ lettersChosen }: Props) {
     9: [],
   }
 
-  function checkWord(currentWord: string) {
-    const arr = wordsByLength[currentWord.length as keyof typeof wordsByLength]
-    if (
-      wordsWithChosenLetters.includes(currentWord) &&
-      !arr.includes(currentWord)
-    ) {
-      arr.push(currentWord)
+  // Remove words with length > 9
+  for (const word of websterDictionary) {
+    if (word.length <= 9) {
+      nineLetterWords.push(word)
     }
   }
 
-  // Refactor
-  //  - use recursion as keyof typeof wordsByLength
-  //  - How can I keep track of how many letters have been done - usedIndices.length
+  // Remove words with non-letters
+  const chosenLetterWords = nineLetterWords.filter((word) => {
+    for (const letter of nonLetters) {
+      if (word.includes(letter)) {
+        return false
+      }
+    }
+    return true
+  })
 
-  function generateWords(currentWord = '', usedIndices: number[] = []) {
+  function generatePossibleWords(currentWord = '', usedIndices: number[] = []) {
     for (let i = 0; i < letters.length; i++) {
+      // skip if already used
       if (usedIndices.includes(i)) continue
       const newWord = currentWord + letters[i]
-      checkWord(newWord)
+      checkWordExists(newWord)
+      // End loop if all 9 letters have been used
       if (usedIndices.length < 9) {
-        generateWords(newWord, [...usedIndices, i])
+        generatePossibleWords(newWord, [...usedIndices, i])
       }
     }
   }
 
-  generateWords()
-  console.log(wordsByLength)
-
-  function returnLongestWords() {
-    if (nineLetterWords.length > 0) {
-      return nineLetterWords
-    }
-    if (eightLetterWords.length > 0) {
-      return eightLetterWords
-    }
-    if (sevenLetterWords.length > 0) {
-      return sevenLetterWords
-    }
-    if (sixLetterWords.length > 0) {
-      return sixLetterWords
-    }
-    if (fiveLetterWords.length > 0) {
-      return fiveLetterWords
-    }
-    if (fourLetterWords.length > 0) {
-      return fourLetterWords
-    }
-    if (threeLetterWords.length > 0) {
-      return threeLetterWords
-    }
-    if (twoLetterWords.length > 0) {
-      return twoLetterWords
+  function checkWordExists(currentWord: string) {
+    const arrayByWordLength =
+      wordsByLength[currentWord.length as keyof typeof wordsByLength]
+    if (
+      chosenLetterWords.includes(currentWord) &&
+      !arrayByWordLength.includes(currentWord)
+    ) {
+      arrayByWordLength.push(currentWord)
     }
   }
 
+  function returnLongestWords() {
+    let longestWords: string[] = []
+    let longestWordLength = 0
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const [key, value] of Object.entries(wordsByLength)) {
+      if (value.length > 0 && value[0].length > longestWordLength) {
+        longestWords = value
+        longestWordLength = value[0].length
+      }
+    }
+    return longestWords
+  }
+
+  generatePossibleWords()
   const longestWords = returnLongestWords()
 
   return (

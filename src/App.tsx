@@ -10,7 +10,6 @@ function App() {
     letters: [],
     numLetters: 0,
   })
-  console.log(lettersChosen)
 
   return (
     <>
