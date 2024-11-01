@@ -11,7 +11,7 @@ interface Props {
 function UserInput({ lettersChosen, timer, setTimer, setUsersAnswer }: Props) {
   const [usersWord, setUsersWord] = useState('')
   const [letterAvailable, setLetterAvailable] = useState(true)
-  const availableLetters = useRef(lettersChosen.letters)
+  const availableLetters = useRef([...lettersChosen.letters])
 
   // start timer
   React.useEffect(() => {
@@ -47,7 +47,8 @@ function UserInput({ lettersChosen, timer, setTimer, setUsersAnswer }: Props) {
   }
 
   function handleDelete(event: React.ChangeEvent<HTMLInputElement>) {
-    const valueBeforeAsArray = usersWord.split('')
+    const valueBefore = usersWord
+    const valueBeforeAsArray = valueBefore.split('')
     setUsersWord(event.target.value)
     const valueAfter = event.target.value
 
@@ -61,6 +62,7 @@ function UserInput({ lettersChosen, timer, setTimer, setUsersAnswer }: Props) {
 
   function handleSubmit() {
     setUsersAnswer(usersWord)
+    // setTimer(0)
   }
 
   return (

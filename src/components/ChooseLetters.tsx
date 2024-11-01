@@ -37,11 +37,11 @@ function ChooseLetters({ lettersChosen, setLettersChosen }: Props) {
       <h1 className="text-3xl mb-3">
         {lettersLeft} letters left, do you want a
       </h1>
-      <button className="btn" onClick={chooseConstonant}>
+      <button className="btn  bg-violet-400" onClick={chooseConstonant}>
         Consonant
       </button>
       <p className="inline text-xl">or a</p>
-      <button className="btn" onClick={chooseVowel}>
+      <button className="btn  bg-violet-400" onClick={chooseVowel}>
         Vowel
       </button>
       <p className="inline text-xl">?</p>

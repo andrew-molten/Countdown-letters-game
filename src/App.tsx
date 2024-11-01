@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import './App.css'
 import ChooseLetters from './components/ChooseLetters'
 import { LettersChosen } from './models'
 import DisplayLetters from './components/DisplayLetters'
-import LongestWord from './components/LongestWord'
 import UserInput from './components/UserInput'
+import LongestWord from './components/LongestWord'
+import RoundSummary from './components/RoundSummary'
 
 function App() {
   const [lettersChosen, setLettersChosen] = useState<LettersChosen>({
@@ -13,6 +14,8 @@ function App() {
   })
   const [timer, setTimer] = useState(30)
   const [usersAnswer, setUsersAnswer] = useState('')
+  const [usersPoints, setUsersPoints] = useState(0)
+  const usersWordIsInDictionary = useRef(false)
 
   return (
     <>
@@ -33,7 +36,23 @@ function App() {
           setUsersAnswer={setUsersAnswer}
         />
       )}
-      {timer === 0 && <LongestWord lettersChosen={lettersChosen} />}
+      {usersAnswer !== '' && (
+        <>
+          {' '}
+          <LongestWord
+            lettersChosen={lettersChosen}
+            usersAnswer={usersAnswer}
+            usersWordIsInDictionary={usersWordIsInDictionary}
+          />
+          <RoundSummary
+            timer={timer}
+            usersAnswer={usersAnswer}
+            usersWordIsInDictionary={usersWordIsInDictionary}
+            usersPoints={usersPoints}
+            setUsersPoints={setUsersPoints}
+          />
+        </>
+      )}
 
       {/* 
         1. Allow the user to choose Consonants/Vowels 
@@ -52,7 +71,7 @@ function App() {
         3. Have a timer that lets the user enter their longest word based on selected letters - before the timer runs out
             - limit the letters used
             - button to submit word
-            - 'Oops sorry too long' message
+            - 'Oops sorry you took too long' message
             - check the word against the dictionary
 
         4. POINTS - 1 point per letter or 18 points if they have used all 9

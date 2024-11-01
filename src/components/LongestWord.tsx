@@ -3,12 +3,20 @@ import { LettersChosen, WordsByLength } from '../models'
 // Removed above dictionary as it had some questionable words
 import { websterDictionary } from '../data/websterDictionary' // from https://github.com/matthewreagan/WebstersEnglishDictionary/blob/master/dictionary.json
 import { alphabet } from '../data/letters'
+import { useEffect, useState } from 'react'
 
 interface Props {
   lettersChosen: LettersChosen
+  usersAnswer: string
+  usersWordIsInDictionary: React.MutableRefObject<boolean>
 }
 
-function LongestWord({ lettersChosen }: Props) {
+function LongestWord({
+  lettersChosen,
+  usersAnswer,
+  usersWordIsInDictionary,
+}: Props) {
+  const [userWon, setUserWon] = useState(false)
   const letters = lettersChosen.letters
   const nonLetters = alphabet.filter((letter) => !letters.includes(letter))
   const nineLetterWords = []
@@ -23,6 +31,10 @@ function LongestWord({ lettersChosen }: Props) {
     8: [],
     9: [],
   }
+
+  useEffect(() => {
+    checkUsersAnswer()
+  })
 
   // Remove words with length > 9
   for (const word of websterDictionary) {
@@ -78,25 +90,49 @@ function LongestWord({ lettersChosen }: Props) {
     return longestWords
   }
 
+  function checkUsersAnswer() {
+    isWordLongest()
+    isWordInDictionary(usersAnswer)
+  }
+
+  function isWordLongest() {
+    if (returnLongestWords().includes(usersAnswer)) {
+      setUserWon(true)
+    } else {
+      setUserWon(false)
+    }
+  }
+
+  function isWordInDictionary(word: string) {
+    if (websterDictionary.includes(word)) {
+      usersWordIsInDictionary.current = true
+    } else {
+      usersWordIsInDictionary.current = false
+    }
+  }
+
   generatePossibleWords()
   const longestWords = returnLongestWords()
 
-  // If timer === 0 && usersAnswer === "" - Sorry you ran out of time!
-
   return (
     <div>
+      {userWon && (
+        <p className="text-2xl mt-10 text-green-600">
+          You got the longest words!
+        </p>
+      )}
       {longestWords && longestWords.length > 1 && (
-        <p className="text-2xl mt-5">
+        <p className="text-2xl mt-10">
           The longest possible words are: {longestWords.join(', ')}
         </p>
       )}
       {longestWords && longestWords.length === 1 && (
-        <p className="text-2xl mt-5">
+        <p className="text-2xl mt-10">
           The longest possible word is: {longestWords[0]}
         </p>
       )}
       {!longestWords && (
-        <p className="text-2xl mt-5">
+        <p className="text-2xl mt-10">
           Hmm.. we can't make any words with those letters
         </p>
       )}
