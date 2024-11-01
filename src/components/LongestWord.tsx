@@ -81,6 +81,8 @@ function LongestWord({ lettersChosen }: Props) {
   generatePossibleWords()
   const longestWords = returnLongestWords()
 
+  // If timer === 0 && usersAnswer === "" - Sorry you ran out of time!
+
   return (
     <div>
       {longestWords && longestWords.length > 1 && (

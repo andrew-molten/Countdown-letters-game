@@ -11,6 +11,8 @@ function App() {
     letters: [],
     numLetters: 0,
   })
+  const [timer, setTimer] = useState(30)
+  const [usersAnswer, setUsersAnswer] = useState('')
 
   return (
     <>
@@ -23,12 +25,15 @@ function App() {
       )}
 
       <DisplayLetters lettersChosen={lettersChosen} />
-      {lettersChosen.numLetters === 9 && (
-        <>
-          <UserInput lettersChosen={lettersChosen} />
-          <LongestWord lettersChosen={lettersChosen} />
-        </>
+      {lettersChosen.numLetters === 9 && usersAnswer === '' && (
+        <UserInput
+          lettersChosen={lettersChosen}
+          timer={timer}
+          setTimer={setTimer}
+          setUsersAnswer={setUsersAnswer}
+        />
       )}
+      {timer === 0 && <LongestWord lettersChosen={lettersChosen} />}
 
       {/* 
         1. Allow the user to choose Consonants/Vowels 
