@@ -7,6 +7,7 @@ interface Props {
 
 function UserInput({ lettersChosen }: Props) {
   const [usersWord, setUsersWord] = useState('')
+  const [letterAvailable, setLetterAvailable] = useState(true)
   const availableLetters = useRef(lettersChosen.letters)
 
   // start timer
@@ -45,19 +46,28 @@ function UserInput({ lettersChosen }: Props) {
       const index = availableLetters.current.indexOf(letter)
       availableLetters.current.splice(index, 1)
       setUsersWord(usersWord + letter)
+    } else {
+      setLetterAvailable(false)
+      setTimeout(() => {
+        setLetterAvailable(true)
+      }, 500)
     }
   }
 
   return (
-    <div className="text-3xl mb-10">
+    <div className={`text-3xl ${letterAvailable ? 'mb-14' : 'mb-0'}`}>
       <p>Enter your longest word:</p>
       <input
         type="text"
         value={usersWord}
         onChange={(event) => handleChange(event)}
-        // onBeforeInput={handleBeforeInput}
-        className="p-3 rounded-3xl text-xl bg-violet-400 empty:outline-1 outline focus:outline-4"
+        className={`p-3 rounded-3xl text-xl bg-violet-400 empty:outline-1 outline focus:outline-4 ${
+          !letterAvailable && 'outline-red-500'
+        }`}
       />
+      <p className="text-xl text-red-500">
+        {!letterAvailable && `❌ You don't have that letter..`}
+      </p>
     </div>
   )
 }
