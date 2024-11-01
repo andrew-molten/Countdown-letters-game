@@ -6,6 +6,8 @@ interface Props {
   usersWordIsInDictionary: React.MutableRefObject<boolean>
   usersPoints: number
   setUsersPoints: React.Dispatch<React.SetStateAction<number>>
+  roundNumber: number
+  startNewRound: () => void
 }
 
 function RoundSummary({
@@ -14,8 +16,10 @@ function RoundSummary({
   usersWordIsInDictionary,
   usersPoints,
   setUsersPoints,
+  roundNumber,
+  startNewRound,
 }: Props) {
-  const [thisRoundPoints, setThisRoundPoints] = useState(0)
+  const [thisRoundPoints, setThisRoundPoints] = useState<number>()
 
   useEffect(() => {
     function calculatePoints() {
@@ -32,16 +36,26 @@ function RoundSummary({
     }
 
     calculatePoints()
-  }, [setUsersPoints, usersAnswer.length, usersPoints, usersWordIsInDictionary])
+  }, [usersAnswer])
 
   return (
     <div>
       {timer === 0 && usersAnswer === '' && (
         <p className="text-3xl text-red-500">Oops sorry you took too long!</p>
       )}
-      <p className="text-3xl mt-10">
-        You earned {thisRoundPoints} points this round with {usersAnswer}!
-      </p>
+      {thisRoundPoints && (
+        <>
+          <p className="text-3xl mt-10">
+            You earned {thisRoundPoints} points this round with {usersAnswer}!
+          </p>
+
+          {roundNumber < 4 && (
+            <button className="btn bg-indigo-500" onClick={startNewRound}>
+              Start round {roundNumber + 1}
+            </button>
+          )}
+        </>
+      )}
     </div>
   )
 }

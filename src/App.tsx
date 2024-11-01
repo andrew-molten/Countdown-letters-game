@@ -15,11 +15,27 @@ function App() {
   const [timer, setTimer] = useState(30)
   const [usersAnswer, setUsersAnswer] = useState('')
   const [usersPoints, setUsersPoints] = useState(0)
+  const [roundNumber, setRoundNumber] = useState(1)
+  const [userWon, setUserWon] = useState(false)
   const usersWordIsInDictionary = useRef(false)
+
+  function startNewRound() {
+    setLettersChosen({
+      letters: [],
+      numLetters: 0,
+    })
+    setTimer(30)
+    setUsersAnswer('')
+    setRoundNumber(roundNumber + 1)
+    usersWordIsInDictionary.current = false
+  }
 
   return (
     <>
       <h1 className="text-3xl font-bold mb-10">Countdown letters</h1>
+      <h2 className="text-2xl font-bold mb-10">
+        Round {roundNumber}, Points: {usersPoints}
+      </h2>
       {lettersChosen.numLetters < 9 && (
         <ChooseLetters
           lettersChosen={lettersChosen}
@@ -43,6 +59,8 @@ function App() {
             lettersChosen={lettersChosen}
             usersAnswer={usersAnswer}
             usersWordIsInDictionary={usersWordIsInDictionary}
+            userWon={userWon}
+            setUserWon={setUserWon}
           />
           <RoundSummary
             timer={timer}
@@ -50,6 +68,8 @@ function App() {
             usersWordIsInDictionary={usersWordIsInDictionary}
             usersPoints={usersPoints}
             setUsersPoints={setUsersPoints}
+            roundNumber={roundNumber}
+            startNewRound={startNewRound}
           />
         </>
       )}
@@ -78,6 +98,13 @@ function App() {
         5. Allow for 4 rounds to be played
         6. Keep track of total points scored
         7. Update readme
+
+        - need to do an end of game round up
+
+        // BUGS
+         - User should be able to submit an answer by pushing enter
+         - Show an error message if the answer is not in the dictionary
+         - Calculate the computers score or total possible points
       
       */}
     </>

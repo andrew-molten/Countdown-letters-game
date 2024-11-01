@@ -3,20 +3,23 @@ import { LettersChosen, WordsByLength } from '../models'
 // Removed above dictionary as it had some questionable words
 import { websterDictionary } from '../data/websterDictionary' // from https://github.com/matthewreagan/WebstersEnglishDictionary/blob/master/dictionary.json
 import { alphabet } from '../data/letters'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 interface Props {
   lettersChosen: LettersChosen
   usersAnswer: string
   usersWordIsInDictionary: React.MutableRefObject<boolean>
+  userWon: boolean
+  setUserWon: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function LongestWord({
   lettersChosen,
   usersAnswer,
   usersWordIsInDictionary,
+  userWon,
+  setUserWon,
 }: Props) {
-  const [userWon, setUserWon] = useState(false)
   const letters = lettersChosen.letters
   const nonLetters = alphabet.filter((letter) => !letters.includes(letter))
   const nineLetterWords = []
