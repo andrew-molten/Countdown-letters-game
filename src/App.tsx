@@ -4,6 +4,7 @@ import ChooseLetters from './components/ChooseLetters'
 import { LettersChosen } from './models'
 import DisplayLetters from './components/DisplayLetters'
 import LongestWord from './components/LongestWord'
+import UserInput from './components/UserInput'
 
 function App() {
   const [lettersChosen, setLettersChosen] = useState<LettersChosen>({
@@ -23,7 +24,10 @@ function App() {
 
       <DisplayLetters lettersChosen={lettersChosen} />
       {lettersChosen.numLetters === 9 && (
-        <LongestWord lettersChosen={lettersChosen} />
+        <>
+          <UserInput lettersChosen={lettersChosen} />
+          <LongestWord lettersChosen={lettersChosen} />
+        </>
       )}
 
       {/* 
@@ -40,9 +44,16 @@ function App() {
             - find a wordfinder API
             - download a list of words & write code to find the longest word
 
-        3. POINTS - 1 point per letter or 18 points if they have used all 9
-        4. Allow for 4 rounds to be played
-        5. Keep track of total points scored
+        3. Have a timer that lets the user enter their longest word based on selected letters - before the timer runs out
+            - limit the letters used
+            - button to submit word
+            - 'Oops sorry too long' message
+            - check the word against the dictionary
+
+        4. POINTS - 1 point per letter or 18 points if they have used all 9
+        5. Allow for 4 rounds to be played
+        6. Keep track of total points scored
+        7. Update readme
       
       */}
     </>
