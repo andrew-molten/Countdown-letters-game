@@ -7,7 +7,8 @@ interface Props {
   usersPoints: number
   setUsersPoints: React.Dispatch<React.SetStateAction<number>>
   roundNumber: number
-  startNewRound: () => void
+  startNewRound: (newRoundNumber: number) => void
+  finishGame: () => void
 }
 
 function RoundSummary({
@@ -18,6 +19,7 @@ function RoundSummary({
   setUsersPoints,
   roundNumber,
   startNewRound,
+  finishGame,
 }: Props) {
   const [thisRoundPoints, setThisRoundPoints] = useState<number>()
   const [beenCalculated, setBeenCalculated] = useState(false)
@@ -53,6 +55,11 @@ function RoundSummary({
               You earned {thisRoundPoints} points this round with {usersAnswer}!
             </p>
           )}
+          {usersAnswer === '' && timer > 0 && (
+            <p className="text-3xl mt-10">
+              You didn't enter a word, no points for you!
+            </p>
+          )}
           {usersAnswer !== '' && !usersWordIsInDictionary.current && (
             <p className="text-3xl text-red-500  mt-10">
               Oops '{usersAnswer}' isn't in the dictionary! You got 0 points
@@ -60,8 +67,16 @@ function RoundSummary({
             </p>
           )}
           {roundNumber < 4 && (
-            <button className="btn bg-indigo-500" onClick={startNewRound}>
+            <button
+              className="btn bg-indigo-500"
+              onClick={() => startNewRound(roundNumber + 1)}
+            >
               Start round {roundNumber + 1}
+            </button>
+          )}
+          {roundNumber === 4 && (
+            <button className="btn bg-indigo-500" onClick={finishGame}>
+              Finish game
             </button>
           )}
         </>

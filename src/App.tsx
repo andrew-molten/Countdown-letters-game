@@ -6,6 +6,7 @@ import DisplayLetters from './components/DisplayLetters'
 import UserInput from './components/UserInput'
 import LongestWord from './components/LongestWord'
 import RoundSummary from './components/RoundSummary'
+import EndGame from './components/EndGame'
 
 function App() {
   const [lettersChosen, setLettersChosen] = useState<LettersChosen>({
@@ -16,62 +17,91 @@ function App() {
   const [usersAnswer, setUsersAnswer] = useState('')
   const [usersPoints, setUsersPoints] = useState(0)
   const [roundNumber, setRoundNumber] = useState(1)
+  const [roundEnded, setRoundEnded] = useState(false)
   const [userWon, setUserWon] = useState(false)
   const usersWordIsInDictionary = useRef(false)
+  const [gameEnded, setGameEnded] = useState(false)
+  const [highScore, setHighScore] = useState(0)
 
-  function startNewRound() {
+  function startNewRound(newRoundNumber: number) {
     setLettersChosen({
       letters: [],
       numLetters: 0,
     })
     setTimer(30)
     setUsersAnswer('')
-    setRoundNumber(roundNumber + 1)
+    setRoundNumber(newRoundNumber)
     usersWordIsInDictionary.current = false
+    setRoundEnded(false)
+  }
+
+  function finishGame() {
+    setGameEnded(true)
+  }
+
+  function startNewGame() {
+    startNewRound(1)
+    setGameEnded(false)
   }
 
   return (
     <>
-      <h1 className="text-3xl font-bold mb-10">Countdown letters</h1>
-      <h2 className="text-2xl font-bold mb-10">
-        Round {roundNumber}, Points: {usersPoints}
-      </h2>
-      {lettersChosen.numLetters < 9 && (
-        <ChooseLetters
-          lettersChosen={lettersChosen}
-          setLettersChosen={setLettersChosen}
-        />
-      )}
-
-      <DisplayLetters lettersChosen={lettersChosen} />
-      {lettersChosen.numLetters === 9 && usersAnswer === '' && (
-        <UserInput
-          lettersChosen={lettersChosen}
-          timer={timer}
-          setTimer={setTimer}
-          setUsersAnswer={setUsersAnswer}
-        />
-      )}
-      {usersAnswer !== '' && (
+      <h1 className="text-3xl font-bold mb-5">Countdown letters</h1>
+      {!gameEnded && (
         <>
-          {' '}
-          <LongestWord
-            lettersChosen={lettersChosen}
-            usersAnswer={usersAnswer}
-            usersWordIsInDictionary={usersWordIsInDictionary}
-            userWon={userWon}
-            setUserWon={setUserWon}
-          />
-          <RoundSummary
-            timer={timer}
-            usersAnswer={usersAnswer}
-            usersWordIsInDictionary={usersWordIsInDictionary}
-            usersPoints={usersPoints}
-            setUsersPoints={setUsersPoints}
-            roundNumber={roundNumber}
-            startNewRound={startNewRound}
-          />
+          <h2 className="text-3xl font-bold mb-10">Round {roundNumber}</h2>
+          <h2 className="text-2xl font-bold mb-10">
+            Your 💎: <span className="text-3xl">{usersPoints}</span> - - -
+            Dictionary's 💎:
+          </h2>
+          {lettersChosen.numLetters < 9 && (
+            <ChooseLetters
+              lettersChosen={lettersChosen}
+              setLettersChosen={setLettersChosen}
+            />
+          )}
+
+          <DisplayLetters lettersChosen={lettersChosen} />
+          {lettersChosen.numLetters === 9 && !roundEnded && (
+            <UserInput
+              lettersChosen={lettersChosen}
+              timer={timer}
+              setTimer={setTimer}
+              setUsersAnswer={setUsersAnswer}
+              setRoundEnded={setRoundEnded}
+            />
+          )}
+          {roundEnded && (
+            <>
+              {' '}
+              <LongestWord
+                lettersChosen={lettersChosen}
+                usersAnswer={usersAnswer}
+                usersWordIsInDictionary={usersWordIsInDictionary}
+                userWon={userWon}
+                setUserWon={setUserWon}
+              />
+              <RoundSummary
+                timer={timer}
+                usersAnswer={usersAnswer}
+                usersWordIsInDictionary={usersWordIsInDictionary}
+                usersPoints={usersPoints}
+                setUsersPoints={setUsersPoints}
+                roundNumber={roundNumber}
+                startNewRound={startNewRound}
+                finishGame={finishGame}
+              />
+            </>
+          )}
         </>
+      )}
+      {roundNumber === 4 && gameEnded && (
+        <EndGame
+          usersPoints={usersPoints}
+          highScore={highScore}
+          setHighScore={setHighScore}
+          startNewGame={startNewGame}
+        />
       )}
 
       {/* 
@@ -104,8 +134,11 @@ function App() {
         // BUGS
          X User should be able to submit an answer by pushing enter
          X Show an error message if the answer is not in the dictionary
+         - If the user doesn't enter anything
          - Calculate the computers score or total possible points
          - Finish the game and ask for another
+         - Welcome to Countdown Letters
+        
       
       */}
     </>

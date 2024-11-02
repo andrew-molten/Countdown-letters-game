@@ -6,9 +6,16 @@ interface Props {
   timer: number
   setTimer: React.Dispatch<React.SetStateAction<number>>
   setUsersAnswer: React.Dispatch<React.SetStateAction<string>>
+  setRoundEnded: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function UserInput({ lettersChosen, timer, setTimer, setUsersAnswer }: Props) {
+function UserInput({
+  lettersChosen,
+  timer,
+  setTimer,
+  setUsersAnswer,
+  setRoundEnded,
+}: Props) {
   const [usersWord, setUsersWord] = useState('')
   const [letterAvailable, setLetterAvailable] = useState(true)
   const availableLetters = useRef([...lettersChosen.letters])
@@ -16,6 +23,7 @@ function UserInput({ lettersChosen, timer, setTimer, setUsersAnswer }: Props) {
   // start timer
   React.useEffect(() => {
     if (timer > 0) setTimeout(() => setTimer(timer - 1), 1000)
+    else setRoundEnded(true)
   }, [timer, setTimer])
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -63,6 +71,7 @@ function UserInput({ lettersChosen, timer, setTimer, setUsersAnswer }: Props) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setUsersAnswer(usersWord)
+    setRoundEnded(true)
   }
 
   return (
