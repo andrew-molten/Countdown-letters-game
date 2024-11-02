@@ -20,19 +20,21 @@ function RoundSummary({
   startNewRound,
 }: Props) {
   const [thisRoundPoints, setThisRoundPoints] = useState<number>()
+  const [beenCalculated, setBeenCalculated] = useState(false)
 
   useEffect(() => {
     function calculatePoints() {
+      let points = 0 // word not in dictionary
       if (usersWordIsInDictionary.current) {
         if (usersAnswer.length === 9) {
-          setThisRoundPoints(18)
-          setUsersPoints(usersPoints + 18)
+          points = 18 // used all 9 letters
         } else {
-          const points = usersAnswer.length
-          setThisRoundPoints(points)
-          setUsersPoints(usersPoints + points)
+          points = usersAnswer.length // 1 pt per letter
         }
       }
+      setThisRoundPoints(points)
+      setUsersPoints(usersPoints + points)
+      setBeenCalculated(true)
     }
 
     calculatePoints()
@@ -43,11 +45,19 @@ function RoundSummary({
       {timer === 0 && usersAnswer === '' && (
         <p className="text-3xl text-red-500">Oops sorry you took too long!</p>
       )}
-      {thisRoundPoints && (
+      {usersAnswer !== '' && !usersWordIsInDictionary.current && (
+        <p className="text-3xl text-red-500  mt-10">
+          Oops '{usersAnswer}' isn't in the dictionary! You got 0 points this
+          round, better luck next time!
+        </p>
+      )}
+      {beenCalculated && (
         <>
-          <p className="text-3xl mt-10">
-            You earned {thisRoundPoints} points this round with {usersAnswer}!
-          </p>
+          {thisRoundPoints! > 0 && (
+            <p className="text-3xl mt-10">
+              You earned {thisRoundPoints} points this round with {usersAnswer}!
+            </p>
+          )}
 
           {roundNumber < 4 && (
             <button className="btn bg-indigo-500" onClick={startNewRound}>
