@@ -102,9 +102,10 @@ function App() {
         - need to do an end of game round up
 
         // BUGS
-         - User should be able to submit an answer by pushing enter
+         X User should be able to submit an answer by pushing enter
          X Show an error message if the answer is not in the dictionary
          - Calculate the computers score or total possible points
+         - Finish the game and ask for another
       
       */}
     </>

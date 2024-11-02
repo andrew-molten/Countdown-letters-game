@@ -60,9 +60,9 @@ function UserInput({ lettersChosen, timer, setTimer, setUsersAnswer }: Props) {
     })
   }
 
-  function handleSubmit() {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     setUsersAnswer(usersWord)
-    // setTimer(0)
   }
 
   return (
@@ -71,17 +71,17 @@ function UserInput({ lettersChosen, timer, setTimer, setUsersAnswer }: Props) {
         <span className="text-4xl text-red-500">{timer}</span> seconds to enter
         your longest word:
       </p>
-      <input
-        type="text"
-        value={usersWord}
-        onChange={(event) => handleChange(event)}
-        className={`p-3 rounded-3xl text-xl bg-violet-400 mt-5 empty:outline-1 outline focus:outline-4 ${
-          !letterAvailable && 'outline-red-500'
-        }`}
-      />
-      <button onClick={handleSubmit} className="btn bg-green-500">
-        Submit
-      </button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={usersWord}
+          onChange={(event) => handleChange(event)}
+          className={`p-3 rounded-3xl text-xl bg-violet-400 mt-5 empty:outline-1 outline focus:outline-4 ${
+            !letterAvailable && 'outline-red-500'
+          }`}
+        />
+        <button className="btn bg-green-500">Submit</button>
+      </form>
       <p className="text-xl text-red-500">
         {!letterAvailable && `❌ You don't have that letter..`}
       </p>
