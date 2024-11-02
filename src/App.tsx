@@ -146,7 +146,6 @@ function App() {
          X If the user doesn't enter anything
          X Calculate the computers score or total possible points
          X Finish the game and ask for another
-         - Welcome to Countdown Letters
         
       
       */}
