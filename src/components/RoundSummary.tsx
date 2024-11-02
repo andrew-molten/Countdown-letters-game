@@ -45,12 +45,7 @@ function RoundSummary({
       {timer === 0 && usersAnswer === '' && (
         <p className="text-3xl text-red-500">Oops sorry you took too long!</p>
       )}
-      {usersAnswer !== '' && !usersWordIsInDictionary.current && (
-        <p className="text-3xl text-red-500  mt-10">
-          Oops '{usersAnswer}' isn't in the dictionary! You got 0 points this
-          round, better luck next time!
-        </p>
-      )}
+
       {beenCalculated && (
         <>
           {thisRoundPoints! > 0 && (
@@ -58,7 +53,12 @@ function RoundSummary({
               You earned {thisRoundPoints} points this round with {usersAnswer}!
             </p>
           )}
-
+          {usersAnswer !== '' && !usersWordIsInDictionary.current && (
+            <p className="text-3xl text-red-500  mt-10">
+              Oops '{usersAnswer}' isn't in the dictionary! You got 0 points
+              this round, better luck next time!
+            </p>
+          )}
           {roundNumber < 4 && (
             <button className="btn bg-indigo-500" onClick={startNewRound}>
               Start round {roundNumber + 1}

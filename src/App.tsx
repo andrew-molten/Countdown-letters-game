@@ -103,7 +103,7 @@ function App() {
 
         // BUGS
          - User should be able to submit an answer by pushing enter
-         - Show an error message if the answer is not in the dictionary
+         X Show an error message if the answer is not in the dictionary
          - Calculate the computers score or total possible points
       
       */}

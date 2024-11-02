@@ -121,22 +121,29 @@ function LongestWord({
     <div>
       {userWon && (
         <p className="text-2xl mt-10 text-green-600">
-          You got the longest words!
+          You got the longest word!
         </p>
       )}
       {longestWords && longestWords.length > 1 && (
         <p className="text-2xl mt-10">
-          The longest possible words are: {longestWords.join(', ')}
+          <span className="font-bold">
+            The longest possible words were {longestWords[0].length} letters
+            long:
+          </span>{' '}
+          {longestWords.join(', ')}
         </p>
       )}
       {longestWords && longestWords.length === 1 && (
         <p className="text-2xl mt-10">
-          The longest possible word is: {longestWords[0]}
+          <span className="font-bold">
+            The longest possible word was {longestWords[0].length} letters long:
+          </span>{' '}
+          {longestWords[0]}
         </p>
       )}
       {!longestWords && (
         <p className="text-2xl mt-10">
-          Hmm.. we can't make any words with those letters
+          Hmm.. we can't make any words with those letters.
         </p>
       )}
     </div>
