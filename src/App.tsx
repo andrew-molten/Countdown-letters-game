@@ -15,13 +15,15 @@ function App() {
   })
   const [timer, setTimer] = useState(30)
   const [usersAnswer, setUsersAnswer] = useState('')
-  const [usersPoints, setUsersPoints] = useState(0)
+  const [userScore, setUserScore] = useState(0)
   const [roundNumber, setRoundNumber] = useState(1)
   const [roundEnded, setRoundEnded] = useState(false)
   const [userWon, setUserWon] = useState(false)
   const usersWordIsInDictionary = useRef(false)
+  const longestWordLength = useRef(0)
   const [gameEnded, setGameEnded] = useState(false)
   const [highScore, setHighScore] = useState(0)
+  const [dictionaryScore, setDictionaryScore] = useState(0)
 
   function startNewRound(newRoundNumber: number) {
     setLettersChosen({
@@ -42,6 +44,8 @@ function App() {
   function startNewGame() {
     startNewRound(1)
     setGameEnded(false)
+    setUserScore(0)
+    setDictionaryScore(0)
   }
 
   return (
@@ -51,8 +55,8 @@ function App() {
         <>
           <h2 className="text-3xl font-bold mb-10">Round {roundNumber}</h2>
           <h2 className="text-2xl font-bold mb-10">
-            Your 💎: <span className="text-3xl">{usersPoints}</span> - - -
-            Dictionary's 💎:
+            Your 💎: <span className="text-3xl">{userScore}</span> - - -
+            Dictionary's 💎: {dictionaryScore}
           </h2>
           {lettersChosen.numLetters < 9 && (
             <ChooseLetters
@@ -80,13 +84,17 @@ function App() {
                 usersWordIsInDictionary={usersWordIsInDictionary}
                 userWon={userWon}
                 setUserWon={setUserWon}
+                longestWordLength={longestWordLength}
               />
               <RoundSummary
                 timer={timer}
                 usersAnswer={usersAnswer}
                 usersWordIsInDictionary={usersWordIsInDictionary}
-                usersPoints={usersPoints}
-                setUsersPoints={setUsersPoints}
+                longestWordLength={longestWordLength}
+                userScore={userScore}
+                setUserScore={setUserScore}
+                dictionaryScore={dictionaryScore}
+                setDictionaryScore={setDictionaryScore}
                 roundNumber={roundNumber}
                 startNewRound={startNewRound}
                 finishGame={finishGame}
@@ -97,7 +105,8 @@ function App() {
       )}
       {roundNumber === 4 && gameEnded && (
         <EndGame
-          usersPoints={usersPoints}
+          userScore={userScore}
+          dictionaryScore={dictionaryScore}
           highScore={highScore}
           setHighScore={setHighScore}
           startNewGame={startNewGame}
@@ -129,14 +138,14 @@ function App() {
         6. Keep track of total points scored
         7. Update readme
 
-        - need to do an end of game round up
+        X need to do an end of game round up
 
         // BUGS
          X User should be able to submit an answer by pushing enter
          X Show an error message if the answer is not in the dictionary
-         - If the user doesn't enter anything
-         - Calculate the computers score or total possible points
-         - Finish the game and ask for another
+         X If the user doesn't enter anything
+         X Calculate the computers score or total possible points
+         X Finish the game and ask for another
          - Welcome to Countdown Letters
         
       

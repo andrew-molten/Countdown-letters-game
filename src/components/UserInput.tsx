@@ -60,7 +60,7 @@ function UserInput({
     setUsersWord(event.target.value)
     const valueAfter = event.target.value
 
-    // Check valueBefore agianst valueAfter
+    // Find the letter not in valueAfter
     valueBeforeAsArray.forEach((letter) => {
       if (!valueAfter.includes(letter)) {
         availableLetters.current.push(letter)
@@ -76,10 +76,12 @@ function UserInput({
 
   return (
     <div className={`text-3xl ${letterAvailable ? 'mb-14' : 'mb-0'}`}>
+      {/* Timer */}
       <p className="mt-10">
         <span className="text-4xl text-red-500">{timer}</span> seconds to enter
         your longest word:
       </p>
+      {/* Input */}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -91,6 +93,7 @@ function UserInput({
         />
         <button className="btn bg-green-500">Submit</button>
       </form>
+      {/* Letter not available error */}
       <p className="text-xl text-red-500">
         {!letterAvailable && `❌ You don't have that letter..`}
       </p>

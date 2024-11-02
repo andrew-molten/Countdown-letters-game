@@ -11,6 +11,7 @@ interface Props {
   usersWordIsInDictionary: React.MutableRefObject<boolean>
   userWon: boolean
   setUserWon: React.Dispatch<React.SetStateAction<boolean>>
+  longestWordLength: React.MutableRefObject<number>
 }
 
 function LongestWord({
@@ -19,6 +20,7 @@ function LongestWord({
   usersWordIsInDictionary,
   userWon,
   setUserWon,
+  longestWordLength,
 }: Props) {
   const letters = lettersChosen.letters
   const nonLetters = alphabet.filter((letter) => !letters.includes(letter))
@@ -70,13 +72,15 @@ function LongestWord({
   }
 
   function checkWordExists(currentWord: string) {
-    const arrayByWordLength =
+    // choose array by length
+    const arrayToPushTo =
       wordsByLength[currentWord.length as keyof typeof wordsByLength]
+    // word is in dictionary && not already in array
     if (
       chosenLetterWords.includes(currentWord) &&
-      !arrayByWordLength.includes(currentWord)
+      !arrayToPushTo.includes(currentWord)
     ) {
-      arrayByWordLength.push(currentWord)
+      arrayToPushTo.push(currentWord)
     }
   }
 
@@ -85,6 +89,7 @@ function LongestWord({
     let longestWordLength = 0
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [key, value] of Object.entries(wordsByLength)) {
+      // determine array with longest words
       if (value.length > 0 && value[0].length > longestWordLength) {
         longestWords = value
         longestWordLength = value[0].length
@@ -116,14 +121,17 @@ function LongestWord({
 
   generatePossibleWords()
   const longestWords = returnLongestWords()
+  longestWordLength.current = longestWords[0]?.length || 0
 
   return (
     <div>
+      {/* User got the longest word */}
       {userWon && (
         <p className="text-2xl mt-10 text-green-600">
           You got the longest word!
         </p>
       )}
+      {/* Multiple longest words */}
       {longestWords && longestWords.length > 1 && (
         <p className="text-2xl mt-10">
           <span className="font-bold">
@@ -133,6 +141,7 @@ function LongestWord({
           {longestWords.join(', ')}
         </p>
       )}
+      {/* One longest word */}
       {longestWords && longestWords.length === 1 && (
         <p className="text-2xl mt-10">
           <span className="font-bold">
@@ -141,6 +150,7 @@ function LongestWord({
           {longestWords[0]}
         </p>
       )}
+      {/* No possible words */}
       {!longestWords && (
         <p className="text-2xl mt-10">
           Hmm.. we can't make any words with those letters.

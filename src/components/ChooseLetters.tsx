@@ -25,7 +25,6 @@ function ChooseLetters({ lettersChosen, setLettersChosen }: Props) {
   }
 
   function setLetter(letter: string) {
-    // update state
     setLettersChosen({
       letters: [...lettersChosen.letters, letter],
       numLetters: lettersChosen.numLetters + 1,

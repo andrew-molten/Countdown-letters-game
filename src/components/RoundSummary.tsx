@@ -4,8 +4,11 @@ interface Props {
   timer: number
   usersAnswer: string
   usersWordIsInDictionary: React.MutableRefObject<boolean>
-  usersPoints: number
-  setUsersPoints: React.Dispatch<React.SetStateAction<number>>
+  longestWordLength: React.MutableRefObject<number>
+  userScore: number
+  setUserScore: React.Dispatch<React.SetStateAction<number>>
+  dictionaryScore: number
+  setDictionaryScore: React.Dispatch<React.SetStateAction<number>>
   roundNumber: number
   startNewRound: (newRoundNumber: number) => void
   finishGame: () => void
@@ -15,8 +18,11 @@ function RoundSummary({
   timer,
   usersAnswer,
   usersWordIsInDictionary,
-  usersPoints,
-  setUsersPoints,
+  longestWordLength,
+  userScore,
+  setUserScore,
+  dictionaryScore,
+  setDictionaryScore,
   roundNumber,
   startNewRound,
   finishGame,
@@ -35,8 +41,9 @@ function RoundSummary({
         }
       }
       setThisRoundPoints(points)
-      setUsersPoints(usersPoints + points)
+      setUserScore(userScore + points)
       setBeenCalculated(true)
+      setDictionaryScore(dictionaryScore + longestWordLength.current)
     }
 
     calculatePoints()
@@ -50,22 +57,26 @@ function RoundSummary({
 
       {beenCalculated && (
         <>
+          {/* Points summary */}
           {thisRoundPoints! > 0 && (
             <p className="text-3xl mt-10">
               You earned {thisRoundPoints} points this round with {usersAnswer}!
             </p>
           )}
+          {/* No word entered */}
           {usersAnswer === '' && timer > 0 && (
             <p className="text-3xl mt-10">
               You didn't enter a word, no points for you!
             </p>
           )}
+          {/* Word not in dictionary */}
           {usersAnswer !== '' && !usersWordIsInDictionary.current && (
             <p className="text-3xl text-red-500  mt-10">
               Oops '{usersAnswer}' isn't in the dictionary! You got 0 points
               this round, better luck next time!
             </p>
           )}
+          {/* Start new round */}
           {roundNumber < 4 && (
             <button
               className="btn bg-indigo-500"
@@ -74,6 +85,7 @@ function RoundSummary({
               Start round {roundNumber + 1}
             </button>
           )}
+          {/* Finish game */}
           {roundNumber === 4 && (
             <button className="btn bg-indigo-500" onClick={finishGame}>
               Finish game
