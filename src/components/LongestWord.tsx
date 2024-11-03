@@ -87,8 +87,7 @@ function LongestWord({
   function returnLongestWords() {
     let longestWords: string[] = []
     let longestWordLength = 0
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const [key, value] of Object.entries(wordsByLength)) {
+    for (const [, value] of Object.entries(wordsByLength)) {
       // determine array with longest words
       if (value.length > 0 && value[0].length > longestWordLength) {
         longestWords = value
