@@ -7,6 +7,7 @@ import UserInput from './components/UserInput'
 import LongestWord from './components/LongestWord'
 import RoundSummary from './components/RoundSummary'
 import EndGame from './components/EndGame'
+import Instructions from './components/Instructions'
 
 function App() {
   const [lettersChosen, setLettersChosen] = useState<LettersChosen>({
@@ -24,6 +25,7 @@ function App() {
   const [gameEnded, setGameEnded] = useState(false)
   const [highScore, setHighScore] = useState(0)
   const [dictionaryScore, setDictionaryScore] = useState(0)
+  const [displayInstructions, setDisplayInstructions] = useState(false)
 
   function startNewRound(newRoundNumber: number) {
     setLettersChosen({
@@ -48,9 +50,24 @@ function App() {
     setDictionaryScore(0)
   }
 
+  function handleInstructions() {
+    setDisplayInstructions(!displayInstructions)
+  }
+
   return (
     <>
-      <h1 className="text-3xl font-bold mb-5">Longest Word Game</h1>
+      <h1 className="text-3xl font-bold relative inline-block mb-5">
+        Longest Word Game{' '}
+        <button
+          className="absolute top-5 right-[-45px] bg-indigo-300 py-1 px-3 rounded-full text-base"
+          onClick={handleInstructions}
+        >
+          ?
+        </button>
+      </h1>{' '}
+      {displayInstructions && (
+        <Instructions handleInstructions={handleInstructions} />
+      )}
       {!gameEnded && (
         <>
           <h2 className="text-3xl font-bold mb-10">Round {roundNumber}</h2>
@@ -112,7 +129,6 @@ function App() {
           startNewGame={startNewGame}
         />
       )}
-
       {/* 
         1. Allow the user to choose Consonants/Vowels 
           - create a button for each
