@@ -25,9 +25,14 @@ function EndGame({
     <>
       {/* New high score */}
       {userScore === highScore && (
-        <h1 className="text-2xl mb-10">
-          Woohoo you got a new high score of {userScore}!
-        </h1>
+        <>
+          <h1 className="text-2xl mb-10">
+            Woohoo you got a new high score of {userScore}!
+          </h1>
+          <h2 className="text-2xl mb-10">
+            The dictionary got: {dictionaryScore}
+          </h2>
+        </>
       )}
       {/* No new high score */}
       {userScore !== highScore && (
