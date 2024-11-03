@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 interface Props {
   userScore: number
   dictionaryScore: number
@@ -13,13 +15,15 @@ function EndGame({
   setHighScore,
   startNewGame,
 }: Props) {
-  function updateHighScore() {
-    if (userScore > highScore) {
-      setHighScore(userScore)
+  useEffect(() => {
+    function updateHighScore() {
+      if (userScore > highScore) {
+        setHighScore(userScore)
+      }
     }
-  }
 
-  updateHighScore()
+    updateHighScore()
+  })
 
   return (
     <>
