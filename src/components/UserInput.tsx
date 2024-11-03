@@ -36,7 +36,7 @@ function UserInput({
     }
 
     if (typedLetter !== null) {
-      checkLetterAvailability(typedLetter)
+      checkLetterAvailability(typedLetter.toLowerCase())
     }
   }
 
@@ -86,8 +86,10 @@ function UserInput({
         <input
           type="text"
           value={usersWord}
+          placeholder="Type here..."
+          autoFocus={true}
           onChange={(event) => handleChange(event)}
-          className={`p-3 rounded-3xl text-xl bg-violet-400 mt-5 empty:outline-1 outline focus:outline-4 ${
+          className={`p-3 rounded-3xl text-xl bg-violet-100 mt-5 empty:outline-1 outline focus:outline-4 ${
             !letterAvailable && 'outline-red-500'
           }`}
         />
