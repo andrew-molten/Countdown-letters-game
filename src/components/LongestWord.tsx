@@ -38,6 +38,7 @@ function LongestWord({
   }
 
   useEffect(() => {
+    // To avoid rerenders
     checkUsersAnswer()
   })
 

@@ -20,7 +20,7 @@ function UserInput({
   const [letterAvailable, setLetterAvailable] = useState(true)
   const availableLetters = useRef([...lettersChosen.letters])
 
-  // start timer
+  // Timer
   React.useEffect(() => {
     if (timer > 0) setTimeout(() => setTimer(timer - 1), 1000)
     else setRoundEnded(true)
